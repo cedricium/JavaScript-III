@@ -1,13 +1,13 @@
 /*
   Object oriented design is commonly used in video games.  For this part of the assignment you will be implementing several constructor functions with their correct inheritance hierarchy.
 
-  In this file you will be creating three constructor functions: GameObject, CharacterStats, Humanoid.  
+  In this file you will be creating three constructor functions: GameObject, CharacterStats, Humanoid.
 
   At the bottom of this file are 3 objects that all end up inheriting from Humanoid.  Use the objects at the bottom of the page to test your constructor functions.
-  
+
   Each constructor function has unique properties and methods that are defined in their block comments below:
 */
-  
+
 /*
   === GameObject ===
   * createdAt
@@ -131,7 +131,62 @@ console.log(archer.greet()); // Lilith offers a greeting in Elvish.
 console.log(mage.takeDamage()); // Bruce took damage.
 console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
-// Stretch task: 
-// * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
+// Stretch task:
+// * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.
 // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
 // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+function Hero(attributes) {
+  Humanoid.call(this, attributes)
+}
+
+Hero.prototype = Object.create(Humanoid.prototype)
+Hero.prototype.useWeapon = function (opponent) {
+  const damage = Math.floor(Math.random() * 5 + 1)
+  opponent.healthPoints -= damage
+  console.log(`${this.name} rolls damage ${damage}`)
+  console.log(opponent.takeDamage())
+}
+
+function Villain(attributes) {
+  Humanoid.call(this, attributes)
+}
+
+Villain.prototype = Object.create(Humanoid.prototype)
+
+const hero = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 4,
+  },
+  healthPoints: 10,
+  name: 'Lilith',
+  team: 'Forest Kingdom',
+  weapons: [
+    'Dagger',
+  ],
+  language: 'Elvish',
+})
+
+const villain = new Villain({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 4,
+  },
+  healthPoints: 10,
+  name: 'Borg',
+  team: 'Dwellers',
+  weapons: [
+    'Axe',
+  ],
+  language: 'Dwarfish',
+})
+
+do {
+  hero.useWeapon(villain)
+} while (villain.healthPoints > 0)
+console.log(villain.destroy())
